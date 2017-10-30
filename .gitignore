@@ -259,3 +259,8 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+/ari/pride_and_prejudice.unzipped.txt
+/ari/zipped.data
+/ari/Debug_compress
+/ari/Debug_decompress
