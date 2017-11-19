@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Encoder", "Encoder\Encoder.vcxproj", "{0002670D-82FB-4EAB-B1CF-011E7F5184F5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Decoder", "Decoder\Decoder.vcxproj", "{1005963C-A299-46AC-800F-FE9C5266E280}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{0002670D-82FB-4EAB-B1CF-011E7F5184F5}.Release|x64.Build.0 = Release|x64
 		{0002670D-82FB-4EAB-B1CF-011E7F5184F5}.Release|x86.ActiveCfg = Release|Win32
 		{0002670D-82FB-4EAB-B1CF-011E7F5184F5}.Release|x86.Build.0 = Release|Win32
+		{1005963C-A299-46AC-800F-FE9C5266E280}.Debug|x64.ActiveCfg = Debug|x64
+		{1005963C-A299-46AC-800F-FE9C5266E280}.Debug|x64.Build.0 = Debug|x64
+		{1005963C-A299-46AC-800F-FE9C5266E280}.Debug|x86.ActiveCfg = Debug|Win32
+		{1005963C-A299-46AC-800F-FE9C5266E280}.Debug|x86.Build.0 = Debug|Win32
+		{1005963C-A299-46AC-800F-FE9C5266E280}.Release|x64.ActiveCfg = Release|x64
+		{1005963C-A299-46AC-800F-FE9C5266E280}.Release|x64.Build.0 = Release|x64
+		{1005963C-A299-46AC-800F-FE9C5266E280}.Release|x86.ActiveCfg = Release|Win32
+		{1005963C-A299-46AC-800F-FE9C5266E280}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

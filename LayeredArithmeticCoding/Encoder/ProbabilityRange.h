@@ -3,7 +3,7 @@
 #include <cstdint>
 
 
-class ProbabilityRange {
+struct ProbabilityRange {
 public:
 	/*
 	** Represents the low and high bounds of the probability range.
@@ -15,5 +15,10 @@ public:
 	**   probabilities. Becomes the denominator used to divide low and high so
 	**   that they lie in the range [0, 1].
 	*/
-	uint32_t count;
+	uint32_t range;
+
+	/*
+	** Constructor.
+	*/
+	ProbabilityRange(uint32_t, uint32_t, uint32_t);
 };

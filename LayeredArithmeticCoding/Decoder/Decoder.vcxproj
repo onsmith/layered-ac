@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{0002670D-82FB-4EAB-B1CF-011E7F5184F5}</ProjectGuid>
-    <RootNamespace>Encoder</RootNamespace>
+    <ProjectGuid>{1005963C-A299-46AC-800F-FE9C5266E280}</ProjectGuid>
+    <RootNamespace>Decoder</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,19 +70,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -112,19 +112,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\io\BitReader.h" />
-    <ClInclude Include="..\io\BitWriter.h" />
-    <ClInclude Include="BinaryEncoder.h" />
-    <ClInclude Include="BinaryModel.h" />
-    <ClInclude Include="ProbabilityRange.h" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="..\Encoder\BinaryModel.cpp" />
+    <ClCompile Include="..\Encoder\ProbabilityRange.cpp" />
     <ClCompile Include="..\io\BitReader.cpp" />
     <ClCompile Include="..\io\BitWriter.cpp" />
-    <ClCompile Include="BinaryEncoder.cpp" />
-    <ClCompile Include="BinaryModel.cpp" />
+    <ClCompile Include="BinaryDecoder.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ProbabilityRange.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BinaryDecoder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
