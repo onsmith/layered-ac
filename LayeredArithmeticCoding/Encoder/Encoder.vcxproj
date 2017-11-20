@@ -114,17 +114,17 @@
   <ItemGroup>
     <ClInclude Include="..\io\BitReader.h" />
     <ClInclude Include="..\io\BitWriter.h" />
-    <ClInclude Include="BinaryEncoder.h" />
-    <ClInclude Include="BinaryModel.h" />
-    <ClInclude Include="ProbabilityRange.h" />
+    <ClInclude Include="..\model\BinaryModel.h" />
+    <ClInclude Include="..\model\ProbabilityModel.h" />
+    <ClInclude Include="..\model\ProbabilityRange.h" />
+    <ClInclude Include="ArithmeticEncoder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\io\BitReader.cpp" />
     <ClCompile Include="..\io\BitWriter.cpp" />
-    <ClCompile Include="BinaryEncoder.cpp" />
-    <ClCompile Include="BinaryModel.cpp" />
+    <ClCompile Include="..\model\BinaryModel.cpp" />
+    <ClCompile Include="..\model\ProbabilityRange.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ProbabilityRange.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

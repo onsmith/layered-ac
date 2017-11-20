@@ -1,7 +1,7 @@
 #include "BinaryModel.h"
 
 
-void BinaryModel::observe(symbol_t bit) {
+void BinaryModel::observe(Symbol bit) {
 	if (bit) {
 		numOnes++;
 	} else {
@@ -9,7 +9,7 @@ void BinaryModel::observe(symbol_t bit) {
 	}
 }
 
-ProbabilityRange BinaryModel::getProbability(symbol_t bit) const {
+ProbabilityRange BinaryModel::getSubrange(Symbol bit) const {
 	long unsigned int numChars = getRange();
 	if (bit) {
 		return ProbabilityRange(numZeros, numChars, numChars);
@@ -18,10 +18,10 @@ ProbabilityRange BinaryModel::getProbability(symbol_t bit) const {
 	}
 }
 
-BinaryModel::probability_t BinaryModel::getRange() const {
+BinaryModel::Probability BinaryModel::getRange() const {
 	return numZeros + numOnes;
 }
 
-BinaryModel::symbol_t BinaryModel::getSymbol(probability_t value) const {
+BinaryModel::Symbol BinaryModel::getSymbol(Probability value) const {
 	return (value >= numZeros);
 }

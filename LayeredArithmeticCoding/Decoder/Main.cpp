@@ -11,7 +11,8 @@ using std::ifstream;
 using std::ofstream;
 using std::ios;
 
-#include "BinaryDecoder.h"
+#include "model/BinaryModel.h"
+#include "ArithmeticDecoder.h"
 
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
@@ -67,14 +68,30 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	// Run binary decoder
+	// Prepare arithmetic encoder
 	BitReader reader(input_file);
 	BitWriter writer(output_file);
-	BinaryDecoder decoder(reader, writer);
-	decoder.run();
+	BinaryModel model;
+	ArithmeticDecoder<bool> decoder(reader, model);
+
+	// Run arithmetic decoder
+	double bits_consumed  = 0;
+	double bits_outputted = 0;
+	while (true) {
+		bool bit = decoder.decode();
+		if (reader.eof()) { break; }
+		bits_outputted++;
+		auto range = model.getSubrange(bit);
+		auto cost = log2(static_cast<double>(range.range) / (range.high - range.low));
+		bits_consumed += cost;
+		model.observe(bit);
+		writer.writeBit(bit);
+		cout << "Decoded " << (bit ? '1' : '0') << ", consuming " << cost << " bits." << endl;
+	}
 
 	// All done
-	cout << "Finished." << endl;
+	cout << endl << "Finished." << endl;
+	cout << "Consumed " << (bits_consumed / 8) << " bytes to decode " << (bits_outputted / 8) << " bytes." << endl;
 	getchar();
 	return 0;
 }

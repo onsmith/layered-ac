@@ -18,24 +18,36 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BinaryDecoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\io\BitReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\io\BitWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Encoder\BinaryModel.cpp">
+    <ClCompile Include="..\model\BinaryModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Encoder\ProbabilityRange.cpp">
+    <ClCompile Include="..\model\ProbabilityRange.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BinaryDecoder.h">
+    <ClInclude Include="..\io\BitReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\io\BitWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArithmeticDecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\model\ProbabilityModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\model\ProbabilityRange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\model\BinaryModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
