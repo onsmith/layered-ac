@@ -75,23 +75,23 @@ int main(int argc, char *argv[]) {
 	ArithmeticDecoder<bool> decoder(reader, model);
 
 	// Run arithmetic decoder
-	double bits_consumed  = 0;
-	double bits_outputted = 0;
+	double bits_consumed = 0;
+	double symbols_outputted = 0;
 	while (true) {
-		bool bit = decoder.decode();
+		auto symbol = decoder.decode();
 		if (reader.eof()) { break; }
-		bits_outputted++;
-		auto range = model.getSubrange(bit);
+		symbols_outputted++;
+		auto range = model.getSubrange(symbol);
 		auto cost = log2(static_cast<double>(range.range) / (range.high - range.low));
 		bits_consumed += cost;
-		model.observe(bit);
-		writer.writeBit(bit);
-		cout << "Decoded " << (bit ? '1' : '0') << ", consuming " << cost << " bits." << endl;
+		model.observe(symbol);
+		writer.writeBit(symbol);
+		cout << "Decoded " << (symbol ? '1' : '0') << ", consuming " << cost << " bits." << endl;
 	}
 
 	// All done
 	cout << endl << "Finished." << endl;
-	cout << "Consumed " << (bits_consumed / 8) << " bytes to decode " << (bits_outputted / 8) << " bytes." << endl;
+	cout << "Consumed " << (bits_consumed / 8) << " bytes to decode " << (symbols_outputted / 8) << " bytes." << endl;
 	getchar();
 	return 0;
 }

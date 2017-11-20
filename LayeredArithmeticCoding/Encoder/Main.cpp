@@ -77,24 +77,24 @@ int main(int argc, char *argv[]) {
 	ArithmeticEncoder<bool> encoder(writer, model);
 
 	// Run arithmetic encoder
-	double bits_encoded   = 0;
+	double symbols_encoded = 0;
 	double bits_outputted = 0;
 	while (true) {
-		auto bit = reader.readBit();
+		auto symbol = reader.readBit();
 		if (reader.eof()) { break; }
-		bits_encoded++;
-		auto range = model.getSubrange(bit);
+		symbols_encoded++;
+		auto range = model.getSubrange(symbol);
 		auto cost = log2(static_cast<double>(range.range) / (range.high - range.low));
-		encoder.encode(bit);
-		model.observe(bit);
+		encoder.encode(symbol);
+		model.observe(symbol);
 		bits_outputted += cost;
-		cout << "Encoded " << (bit ? '1' : '0') << ", spending " << cost << " bits." << endl;
+		cout << "Encoded " << (symbol ? '1' : '0') << ", spending " << cost << " bits." << endl;
 	}
 	encoder.finish();
 
 	// All done
 	cout << endl << "Finished." << endl;
-	cout << "Spent " << (bits_outputted / 8) << " bytes to encode " << (bits_encoded / 8) << " bytes." << endl;
+	cout << "Spent " << (bits_outputted / 8) << " bytes to encode " << (symbols_encoded / 8) << " bytes." << endl;
 	getchar();
 	return 0;
 }
