@@ -11,13 +11,11 @@ using std::ifstream;
 using std::ofstream;
 using std::ios;
 
-#include <cmath>
-
-#include "model/BinaryModel.h"
-#include "base/ArithmeticEncoder.h"
+#include "RateBinaryArithmeticDecoder.h"
 
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
+#include "model/BinaryModel.h"
 
 
 /*
@@ -74,27 +72,38 @@ int main(int argc, char *argv[]) {
 	BitReader reader(input_file);
 	BitWriter writer(output_file);
 	BinaryModel model;
-	ArithmeticEncoder<bool> encoder(writer, model);
+	RateBinaryArithmeticDecoder decoder(reader, model, 0.4, 5.0);
 
-	// Run arithmetic encoder
-	double symbols_encoded = 0;
-	double bits_outputted = 0;
-	while (true) {
-		auto symbol = reader.readBit();
-		if (reader.eof()) { break; }
-		symbols_encoded++;
-		auto range = model.getSubrange(symbol);
-		auto cost = log2(static_cast<double>(range.range) / (range.high - range.low));
-		encoder.encode(symbol);
-		model.observe(symbol);
-		bits_outputted += cost;
-		cout << "Encoded " << (symbol ? '1' : '0') << ", spending " << cost << " bits." << endl;
+	// Run arithmetic decoder
+	double decoded = 0.0;
+	double dropped = 0.0;
+	double spent   = 0.0;
+	while (!reader.eof()) {
+		double max_cost = model.getSubrange(model.getCostliestSymbol()).bitcost();
+		double budget = decoder.nextSymbolBudget();
+		cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
+		if (max_cost <= budget) {
+			bool symbol = decoder.decode();
+			double actual_cost = model.getSubrange(symbol).bitcost();
+			spent += actual_cost;
+			model.observe(symbol);
+			writer.writeBit(symbol);
+			cout << "Decoded " << (symbol ? '1' : '0') << ", spending " << actual_cost << " bits." << endl;
+			decoded++;
+		} else {
+			bool symbol = model.getCheapestSymbol();
+			writer.writeBit(symbol);
+			decoder.spendBits(0.0);
+			cout << "Couldn't decode next symbol. Chose " << (symbol ? '1' : '0') << " instead." << endl;
+			dropped++;
+		}
+		//getchar();
 	}
-	encoder.finish();
 
 	// All done
 	cout << endl << "Finished." << endl;
-	cout << "Spent " << (bits_outputted / 8) << " bytes to encode " << (symbols_encoded / 8) << " bytes." << endl;
+	cout << "Decoded " << decoded << " symbols; dropped " << dropped << " symbols." << endl;
+	cout << "Output compression ratio is " << spent / (decoded + dropped) << endl;
 	getchar();
 	return 0;
 }

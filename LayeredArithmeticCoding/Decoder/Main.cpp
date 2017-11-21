@@ -12,7 +12,7 @@ using std::ofstream;
 using std::ios;
 
 #include "model/BinaryModel.h"
-#include "ArithmeticDecoder.h"
+#include "base/ArithmeticDecoder.h"
 
 #include "io/BitReader.h"
 #include "io/BitWriter.h"

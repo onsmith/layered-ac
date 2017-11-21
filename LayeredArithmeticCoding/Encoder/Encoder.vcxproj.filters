@@ -21,9 +21,6 @@
     <ClInclude Include="..\io\BitReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ArithmeticEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\model\BinaryModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -31,6 +28,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\model\ProbabilityModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\base\ArithmeticEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -25,3 +25,11 @@ BinaryModel::Probability BinaryModel::getRange() const {
 BinaryModel::Symbol BinaryModel::getSymbol(Probability value) const {
 	return (value >= numZeros);
 }
+
+BinaryModel::Symbol BinaryModel::getCheapestSymbol() const {
+	return (numOnes > numZeros);
+}
+
+BinaryModel::Symbol BinaryModel::getCostliestSymbol() const {
+	return (numOnes <= numZeros);
+}

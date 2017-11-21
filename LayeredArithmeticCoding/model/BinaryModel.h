@@ -39,4 +39,14 @@ public:
 	** Looks up the symbol for a given probability.
 	*/
 	Symbol getSymbol(Probability) const final;
+
+	/*
+	** Looks up the cheapest symbol to encode.
+	*/
+	Symbol getCheapestSymbol() const final;
+
+	/*
+	** Looks up the costliest symbol to encode.
+	*/
+	Symbol getCostliestSymbol() const final;
 };

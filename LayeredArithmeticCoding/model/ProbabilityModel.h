@@ -27,4 +27,14 @@ public:
 	** Looks up the Symbol for a given Probability value.
 	*/
 	virtual Symbol getSymbol(Probability) const = 0;
+
+	/*
+	** Looks up the cheapest symbol to encode.
+	*/
+	virtual Symbol getCheapestSymbol() const = 0;
+
+	/*
+	** Looks up the costliest symbol to encode.
+	*/
+	virtual Symbol getCostliestSymbol() const = 0;
 };

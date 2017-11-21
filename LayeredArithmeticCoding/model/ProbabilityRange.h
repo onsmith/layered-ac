@@ -21,4 +21,9 @@ public:
 	** Constructor.
 	*/
 	ProbabilityRange(uint32_t, uint32_t, uint32_t);
+
+	/*
+	** Calculates the bit cost of encoding the subrange.
+	*/
+	double bitcost() const;
 };

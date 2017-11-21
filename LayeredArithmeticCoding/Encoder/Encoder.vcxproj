@@ -112,12 +112,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\base\ArithmeticEncoder.h" />
     <ClInclude Include="..\io\BitReader.h" />
     <ClInclude Include="..\io\BitWriter.h" />
     <ClInclude Include="..\model\BinaryModel.h" />
     <ClInclude Include="..\model\ProbabilityModel.h" />
     <ClInclude Include="..\model\ProbabilityRange.h" />
-    <ClInclude Include="ArithmeticEncoder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\io\BitReader.cpp" />

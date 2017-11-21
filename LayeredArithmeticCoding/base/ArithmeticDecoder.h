@@ -1,7 +1,6 @@
 #pragma once
 
 #include "model/ProbabilityModel.h"
-
 #include "io/BitReader.h"
 
 
@@ -24,7 +23,7 @@ public:
 	const static Code THREE_FOURTHS_RANGE = ONE_HALF_RANGE + ONE_FOURTH_RANGE;
 
 
-private:
+protected:
 	/*
 	** Encapsulates a BitReader for reading bits from an istream.
 	*/

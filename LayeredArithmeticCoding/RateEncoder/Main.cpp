@@ -13,11 +13,11 @@ using std::ios;
 
 #include <cmath>
 
-#include "model/BinaryModel.h"
-#include "base/ArithmeticEncoder.h"
+#include "RateBinaryArithmeticEncoder.h"
 
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
+#include "model/BinaryModel.h"
 
 
 /*
@@ -74,27 +74,39 @@ int main(int argc, char *argv[]) {
 	BitReader reader(input_file);
 	BitWriter writer(output_file);
 	BinaryModel model;
-	ArithmeticEncoder<bool> encoder(writer, model);
+	RateBinaryArithmeticEncoder encoder(writer, model, 0.4, 5.0);
 
 	// Run arithmetic encoder
-	double symbols_encoded = 0;
-	double bits_outputted = 0;
+	double encoded = 0.0;
+	double dropped = 0.0;
+	double spent   = 0.0;
 	while (true) {
 		auto symbol = reader.readBit();
 		if (reader.eof()) { break; }
-		symbols_encoded++;
-		auto range = model.getSubrange(symbol);
-		auto cost = log2(static_cast<double>(range.range) / (range.high - range.low));
-		encoder.encode(symbol);
-		model.observe(symbol);
-		bits_outputted += cost;
-		cout << "Encoded " << (symbol ? '1' : '0') << ", spending " << cost << " bits." << endl;
+		ProbabilityRange range(model.getSubrange(symbol));
+		double actual_cost = range.bitcost();
+		double max_cost = model.getSubrange(model.getCostliestSymbol()).bitcost();
+		double budget = encoder.nextSymbolBudget();
+		cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
+		if (max_cost <= budget) {
+			encoder.encode(symbol);
+			model.observe(symbol);
+			cout << "Encoded " << (symbol ? '1' : '0') << ", spending " << actual_cost << " bits." << endl;
+			spent += actual_cost;
+			encoded++;
+		} else {
+			encoder.spendBits(0.0);
+			cout << "Couldn't encode " << (symbol ? '1' : '0') << '.' << endl;
+			dropped++;
+		}
+		//getchar();
 	}
 	encoder.finish();
 
 	// All done
 	cout << endl << "Finished." << endl;
-	cout << "Spent " << (bits_outputted / 8) << " bytes to encode " << (symbols_encoded / 8) << " bytes." << endl;
+	cout << "Encoded " << encoded << " symbols; dropped " << dropped << " symbols." << endl;
+	cout << "Output compression ratio is " << spent / (encoded + dropped) << endl;
 	getchar();
 	return 0;
 }
