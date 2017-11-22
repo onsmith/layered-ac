@@ -4,10 +4,10 @@
 TargetRateController::TargetRateController(double target, double budget) :
 	target(target),
 	budget(budget) {
-	spendBits(0.0);
+	spendBits();
 }
 
-double TargetRateController::nextSymbolBudget() {
+double TargetRateController::symbolBudget() const {
 	return budget;
 }
 

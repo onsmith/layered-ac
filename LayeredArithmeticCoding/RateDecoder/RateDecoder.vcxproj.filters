@@ -27,18 +27,18 @@
     <ClCompile Include="..\io\BitWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RateBinaryArithmeticDecoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\RateEncoder\TargetRateController.cpp">
+    <ClCompile Include="..\rc\TargetRateController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RateBinaryArithmeticDecoder.h">
+    <ClInclude Include="RateDropArithmeticDecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\base\ArithmeticDecoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

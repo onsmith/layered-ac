@@ -113,24 +113,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\base\ArithmeticEncoder.h" />
-    <ClInclude Include="..\io\BitReader.h" />
-    <ClInclude Include="..\io\BitWriter.h" />
-    <ClInclude Include="..\model\BinaryModel.h" />
-    <ClInclude Include="..\model\ProbabilityModel.h" />
-    <ClInclude Include="..\model\ProbabilityRange.h" />
-    <ClInclude Include="RateBinaryArithmeticEncoder.h" />
-    <ClInclude Include="Rational.h" />
-    <ClInclude Include="TargetRateController.h" />
+    <ClInclude Include="RateDropArithmeticEncoder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\io\BitReader.cpp" />
     <ClCompile Include="..\io\BitWriter.cpp" />
     <ClCompile Include="..\model\BinaryModel.cpp" />
     <ClCompile Include="..\model\ProbabilityRange.cpp" />
+    <ClCompile Include="..\rc\TargetRateController.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="RateBinaryArithmeticEncoder.cpp" />
-    <ClCompile Include="Rational.cpp" />
-    <ClCompile Include="TargetRateController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

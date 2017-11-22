@@ -13,6 +13,8 @@ public:
 	*/
 	typedef uint32_t Probability;
 
+
+public:
 	/*
 	** Gets the largest permitted Probability value.
 	*/
@@ -27,6 +29,12 @@ public:
 	** Looks up the Symbol for a given Probability value.
 	*/
 	virtual Symbol getSymbol(Probability) const = 0;
+
+	/*
+	** Updates the model given the presence of a symbol. Allows ProbabilityModel
+	**   objects to be adaptive.
+	*/
+	virtual void update(Symbol) = 0;
 
 	/*
 	** Looks up the cheapest symbol to encode.

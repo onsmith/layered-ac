@@ -1,7 +1,9 @@
 #pragma once
 
+#include "RateController.h"
 
-class TargetRateController {
+
+class TargetRateController : public RateController {
 private:
 	/*
 	** The number of bits allocated for each symbol.
@@ -21,17 +23,12 @@ public:
 	TargetRateController(double target, double budget = 0.0);
 
 	/*
-	** Gets the number of bits (as a Rational) alloted to the next symbol.
+	** Gets the number of bits alloted to the next symbol.
 	*/
-	double nextSymbolBudget();
+	double symbolBudget() const final;
 
 	/*
 	** Informs the rate controller how many bits were used by the prior symbol.
 	*/
-	void spendBits(double);
-
-	/*
-	** Virtual destructor.
-	*/
-	virtual ~TargetRateController() = default;
+	void spendBits(double bits = 0.0) final;
 };

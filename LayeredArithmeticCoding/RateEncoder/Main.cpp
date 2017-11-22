@@ -13,11 +13,12 @@ using std::ios;
 
 #include <cmath>
 
-#include "RateBinaryArithmeticEncoder.h"
-
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
 #include "model/BinaryModel.h"
+#include "rc/TargetRateController.h"
+
+#include "RateDropArithmeticEncoder.h"
 
 
 /*
@@ -74,7 +75,8 @@ int main(int argc, char *argv[]) {
 	BitReader reader(input_file);
 	BitWriter writer(output_file);
 	BinaryModel model;
-	RateBinaryArithmeticEncoder encoder(writer, model, 0.4, 5.0);
+	TargetRateController rateController(1.5, 5.0); // target bitrate, initial budget
+	RateDropArithmeticEncoder<bool> encoder(writer, model, rateController);
 
 	// Run arithmetic encoder
 	double encoded = 0.0;
@@ -83,20 +85,18 @@ int main(int argc, char *argv[]) {
 	while (true) {
 		auto symbol = reader.readBit();
 		if (reader.eof()) { break; }
-		ProbabilityRange range(model.getSubrange(symbol));
-		double actual_cost = range.bitcost();
-		double max_cost = model.getSubrange(model.getCostliestSymbol()).bitcost();
-		double budget = encoder.nextSymbolBudget();
-		cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
-		if (max_cost <= budget) {
+		double actual_cost = model.getSubrange(symbol).bitcost();
+		double max_cost    = model.getSubrange(model.getCostliestSymbol()).bitcost();
+		double budget      = rateController.symbolBudget();
+		//cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
+		if (encoder.canEncodeNextSymbol()) {
+			//cout << "Encoded " << (symbol ? '1' : '0') << ", spending " << actual_cost << " bits." << endl;
 			encoder.encode(symbol);
-			model.observe(symbol);
-			cout << "Encoded " << (symbol ? '1' : '0') << ", spending " << actual_cost << " bits." << endl;
 			spent += actual_cost;
 			encoded++;
 		} else {
-			encoder.spendBits(0.0);
-			cout << "Couldn't encode " << (symbol ? '1' : '0') << '.' << endl;
+			//cout << "Couldn't encode " << (symbol ? '1' : '0') << '.' << endl;
+			encoder.skipSymbol();
 			dropped++;
 		}
 		//getchar();

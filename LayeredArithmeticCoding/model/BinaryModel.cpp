@@ -1,7 +1,7 @@
 #include "BinaryModel.h"
 
 
-void BinaryModel::observe(Symbol bit) {
+void BinaryModel::update(Symbol bit) {
 	if (bit) {
 		numOnes++;
 	} else {

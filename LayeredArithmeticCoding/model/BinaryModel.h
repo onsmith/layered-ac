@@ -21,9 +21,9 @@ private:
 
 public:
 	/*
-	** Observes a given symbol.
+	** Updates the model given the presence of a symbol.
 	*/
-	void observe(Symbol);
+	void update(Symbol) final;
 
 	/*
 	** Gets the range of probabilities.
