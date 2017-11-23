@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 	// Prepare arithmetic encoder
 	BitReader reader(input_file);
 	ByteModel model;
-	TargetRateController rateController(4, 0); // target bits per symbol, initial bit surplus
+	TargetRateController rateController(4, 100*8); // target bits per symbol, initial bit surplus
 	RateDropArithmeticDecoder<unsigned char> decoder(reader, model, rateController);
 
 	// Run arithmetic decoder

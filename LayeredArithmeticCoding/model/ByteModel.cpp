@@ -12,7 +12,7 @@ ByteModel::ByteModel() :
 }
 
 void ByteModel::update(Symbol symbol) {
-	if (counts.back() < 0xFFF) {
+	if (counts.back() < 0x1000) {
 		for (int i = symbol; i < counts.size(); i++) {
 			counts[i]++;
 		}
