@@ -15,6 +15,7 @@ using std::ios;
 
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
+#include "model/ByteModel.h"
 #include "model/BinaryModel.h"
 #include "rc/TargetRateController.h"
 
@@ -71,10 +72,9 @@ int main(int argc, char *argv[]) {
 
 	// Prepare arithmetic encoder
 	BitReader reader(input_file);
-	BitWriter writer(output_file);
-	BinaryModel model;
-	TargetRateController rateController(1.5, 5.0);
-	RateDropArithmeticDecoder<bool> decoder(reader, model, rateController);
+	ByteModel model;
+	TargetRateController rateController(4, 0); // target bits per symbol, initial bit surplus
+	RateDropArithmeticDecoder<unsigned char> decoder(reader, model, rateController);
 
 	// Run arithmetic decoder
 	double decoded = 0.0;
@@ -84,15 +84,15 @@ int main(int argc, char *argv[]) {
 		double budget = rateController.symbolBudget();
 		//cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
 		if (decoder.canDecodeNextSymbol()) {
-			bool symbol = decoder.decode();
-			writer.writeBit(symbol);
-			//cout << "Decoded " << (symbol ? '1' : '0') << "." << endl;
+			auto symbol = decoder.decode();
+			output_file.write(reinterpret_cast<char*>(&symbol), sizeof(symbol));
+			//cout << "Decoded " << symbol << " (" << static_cast<int>(symbol) << ")." << endl;
 			decoded++;
 		} else {
 			decoder.skipSymbol();
-			bool symbol = model.getCheapestSymbol();
-			writer.writeBit(symbol);
-			//cout << "Couldn't decode next symbol. Chose " << (symbol ? '1' : '0') << " instead." << endl;
+			auto symbol = 'X'; //model.getCheapestSymbol();
+			output_file.write(reinterpret_cast<char*>(&symbol), sizeof(symbol));
+			//cout << "Couldn't decode next symbol. Chose " << symbol << " instead." << endl;
 			dropped++;
 		}
 		//getchar();

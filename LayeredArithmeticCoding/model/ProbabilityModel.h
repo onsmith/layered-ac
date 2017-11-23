@@ -11,7 +11,7 @@ public:
 	/*
 	** Data types.
 	*/
-	typedef uint32_t Probability;
+	typedef uint64_t Probability;
 
 
 public:

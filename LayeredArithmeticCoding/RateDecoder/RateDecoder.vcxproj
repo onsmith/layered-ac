@@ -115,6 +115,7 @@
     <ClCompile Include="..\io\BitReader.cpp" />
     <ClCompile Include="..\io\BitWriter.cpp" />
     <ClCompile Include="..\model\BinaryModel.cpp" />
+    <ClCompile Include="..\model\ByteModel.cpp" />
     <ClCompile Include="..\model\ProbabilityRange.cpp" />
     <ClCompile Include="..\rc\TargetRateController.cpp" />
     <ClCompile Include="Main.cpp" />

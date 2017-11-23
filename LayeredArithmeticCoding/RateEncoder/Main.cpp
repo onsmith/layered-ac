@@ -15,6 +15,7 @@ using std::ios;
 
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
+#include "model/ByteModel.h"
 #include "model/BinaryModel.h"
 #include "rc/TargetRateController.h"
 
@@ -72,30 +73,30 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Prepare arithmetic encoder
-	BitReader reader(input_file);
 	BitWriter writer(output_file);
-	BinaryModel model;
-	TargetRateController rateController(1.5, 5.0); // target bitrate, initial budget
-	RateDropArithmeticEncoder<bool> encoder(writer, model, rateController);
+	ByteModel model;
+	TargetRateController rateController(4, 0); // target bits per symbol, initial bit surplus
+	RateDropArithmeticEncoder<unsigned char> encoder(writer, model, rateController);
 
 	// Run arithmetic encoder
 	double encoded = 0.0;
 	double dropped = 0.0;
 	double spent   = 0.0;
 	while (true) {
-		auto symbol = reader.readBit();
-		if (reader.eof()) { break; }
+		unsigned char symbol;
+		input_file.read(reinterpret_cast<char*>(&symbol), sizeof(symbol));
+		if (input_file.eof()) { break; }
 		double actual_cost = model.getSubrange(symbol).bitcost();
 		double max_cost    = model.getSubrange(model.getCostliestSymbol()).bitcost();
 		double budget      = rateController.symbolBudget();
 		//cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
 		if (encoder.canEncodeNextSymbol()) {
-			//cout << "Encoded " << (symbol ? '1' : '0') << ", spending " << actual_cost << " bits." << endl;
+			//cout << "Encoded " << symbol << ", spending " << actual_cost << " bits." << endl;
 			encoder.encode(symbol);
 			spent += actual_cost;
 			encoded++;
 		} else {
-			//cout << "Couldn't encode " << (symbol ? '1' : '0') << '.' << endl;
+			//cout << "Couldn't encode " << symbol << '.' << endl;
 			encoder.skipSymbol();
 			dropped++;
 		}

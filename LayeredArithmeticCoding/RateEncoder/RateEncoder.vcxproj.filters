@@ -21,6 +21,9 @@
     <ClInclude Include="RateDropArithmeticEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\model\ByteModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\io\BitReader.cpp">
@@ -39,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\rc\TargetRateController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\model\ByteModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

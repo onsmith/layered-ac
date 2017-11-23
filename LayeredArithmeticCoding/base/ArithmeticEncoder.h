@@ -16,7 +16,7 @@ public:
 	/*
 	** Constants.
 	*/
-	const static int  CODE_BIT_LENGTH     = 8;
+	const static int  CODE_BIT_LENGTH     = 16;
 	const static Code WHOLE_RANGE         = (0x1 << CODE_BIT_LENGTH) - 1;
 	const static Code ONE_HALF_RANGE      = 0x1 << (CODE_BIT_LENGTH - 1);
 	const static Code ONE_FOURTH_RANGE    = ONE_HALF_RANGE >> 1;

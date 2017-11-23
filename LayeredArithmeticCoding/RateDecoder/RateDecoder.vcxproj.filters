@@ -33,6 +33,9 @@
     <ClCompile Include="..\rc\TargetRateController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\model\ByteModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RateDropArithmeticDecoder.h">
