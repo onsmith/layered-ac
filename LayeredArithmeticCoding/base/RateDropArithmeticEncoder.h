@@ -12,7 +12,7 @@ private:
 	/*
 	** Composition of these three objects.
 	*/
-	ProbabilityModel<Symbol>  &model;
+	ProbabilityModel<Symbol>  &probabilityModel;
 	ArithmeticEncoder<Symbol> encoder;
 	RateController            &rateController;
 
@@ -22,11 +22,11 @@ public:
 	** Constructor.
 	*/
 	RateDropArithmeticEncoder(
-		BitWriter& writer,
-		ProbabilityModel<Symbol>& model,
-		RateController& rateController
+		BitWriter                &writer,
+		ProbabilityModel<Symbol> &model,
+		RateController           &rateController
 	) :
-		model(model),
+		probabilityModel(model),
 		encoder(writer, model),
 		rateController(rateController) {
 	}
@@ -36,7 +36,7 @@ public:
 	**   symbol.
 	*/
 	bool canEncodeNextSymbol() const {
-		double max_cost = model.getSubrange(model.getCostliestSymbol()).bitcost();
+		double max_cost = probabilityModel.getSubrange(probabilityModel.getCostliestSymbol()).bitcost();
 		double budgeted_cost = rateController.symbolBudget();
 		return (max_cost <= budgeted_cost);
 	}
@@ -54,8 +54,8 @@ public:
 	*/
 	void encode(Symbol symbol) {
 		encoder.encode(symbol);
-		rateController.spendBits(model.getSubrange(symbol).bitcost());
-		model.update(symbol);
+		rateController.spendBits(probabilityModel.getSubrange(symbol).bitcost());
+		//model.update(symbol);
 	}
 
 	/*
@@ -63,5 +63,12 @@ public:
 	*/
 	void finish() {
 		encoder.finish();
+	}
+
+	/*
+	** Returns a reference to the model used by the encoder.
+	*/
+	ProbabilityModel<Symbol>& model() {
+		return probabilityModel;
 	}
 };

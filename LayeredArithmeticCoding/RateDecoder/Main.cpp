@@ -11,13 +11,12 @@ using std::ifstream;
 using std::ofstream;
 using std::ios;
 
-#include "RateDropArithmeticDecoder.h"
 
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
 #include "model/ByteModel.h"
-#include "model/BinaryModel.h"
 #include "rc/TargetRateController.h"
+#include "base/RateDropArithmeticDecoder.h"
 
 
 /*
@@ -73,7 +72,7 @@ int main(int argc, char *argv[]) {
 	// Prepare arithmetic encoder
 	BitReader reader(input_file);
 	ByteModel model;
-	TargetRateController rateController(4, 100*8); // target bits per symbol, initial bit surplus
+	TargetRateController rateController(8, 100*8); // target bits per symbol, initial bit surplus
 	RateDropArithmeticDecoder<unsigned char> decoder(reader, model, rateController);
 
 	// Run arithmetic decoder
@@ -85,6 +84,7 @@ int main(int argc, char *argv[]) {
 		//cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
 		if (decoder.canDecodeNextSymbol()) {
 			auto symbol = decoder.decode();
+			decoder.model().update(symbol);
 			output_file.write(reinterpret_cast<char*>(&symbol), sizeof(symbol));
 			//cout << "Decoded " << symbol << " (" << static_cast<int>(symbol) << ")." << endl;
 			decoded++;

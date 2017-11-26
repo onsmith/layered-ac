@@ -18,10 +18,10 @@
     <ClInclude Include="..\base\ArithmeticEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RateDropArithmeticEncoder.h">
+    <ClInclude Include="..\model\ByteModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\model\ByteModel.h">
+    <ClInclude Include="..\base\RateDropArithmeticEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

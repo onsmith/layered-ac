@@ -12,7 +12,7 @@ private:
 	/*
 	** Composition of these three objects.
 	*/
-	ProbabilityModel<Symbol>  &model;
+	ProbabilityModel<Symbol>  &probabilityModel;
 	ArithmeticDecoder<Symbol> decoder;
 	RateController            &rateController;
 
@@ -23,11 +23,11 @@ public:
 	*/
 	RateDropArithmeticDecoder(
 		BitReader& reader,
-		ProbabilityModel<Symbol>& model,
+		ProbabilityModel<Symbol>& probabilityModel,
 		RateController& rateController
 	) :
-		model(model),
-		decoder(reader, model),
+		probabilityModel(probabilityModel),
+		decoder(reader, probabilityModel),
 		rateController(rateController) {
 	}
 
@@ -36,7 +36,7 @@ public:
 	**   symbol.
 	*/
 	bool canDecodeNextSymbol() const {
-		double max_cost = model.getSubrange(model.getCostliestSymbol()).bitcost();
+		double max_cost = probabilityModel.getSubrange(probabilityModel.getCostliestSymbol()).bitcost();
 		double budgeted_cost = rateController.symbolBudget();
 		return (max_cost <= budgeted_cost);
 	}
@@ -54,8 +54,15 @@ public:
 	*/
 	Symbol decode() {
 		Symbol symbol(decoder.decode());
-		rateController.spendBits(model.getSubrange(symbol).bitcost());
-		model.update(symbol);
+		rateController.spendBits(probabilityModel.getSubrange(symbol).bitcost());
+		//model.update(symbol);
 		return symbol;
+	}
+
+	/*
+	** Returns a reference to the model used by the decoder.
+	*/
+	ProbabilityModel<Symbol>& model() {
+		return probabilityModel;
 	}
 };

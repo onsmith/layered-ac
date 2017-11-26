@@ -122,7 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\base\ArithmeticDecoder.h" />
-    <ClInclude Include="RateDropArithmeticDecoder.h" />
+    <ClInclude Include="..\base\RateDropArithmeticDecoder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

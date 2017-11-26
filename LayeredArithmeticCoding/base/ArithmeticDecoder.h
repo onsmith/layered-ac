@@ -32,7 +32,7 @@ protected:
 	/*
 	** Encapsulates a ProbabilityModel for computing symbol subranges.
 	*/
-	const ProbabilityModel<Symbol> &model;
+	const ProbabilityModel<Symbol> &probabilityModel;
 
 	/*
 	** Tracks the arithmetic encoding range.
@@ -62,9 +62,9 @@ public:
 	/*
 	** Constructor.
 	*/
-	ArithmeticDecoder(BitReader &reader, ProbabilityModel<Symbol> &model) :
+	ArithmeticDecoder(BitReader &reader, ProbabilityModel<Symbol> &probabilityModel) :
 		reader(reader),
-		model(model),
+		probabilityModel(probabilityModel),
 		low(0),
 		high(WHOLE_RANGE) {
 		initializeValue();
@@ -77,9 +77,9 @@ public:
 	Symbol decode() {
 		// Get the Symbol and ProbabilityRange corresponding to the current Code
 		Code const range = high - low + 1;
-		Code const scaled_value = ((value - low + 1) * model.getRange() - 1) / range;
-		Symbol const symbol = model.getSymbol(scaled_value);
-		ProbabilityRange const p = model.getSubrange(symbol);
+		Code const scaled_value = ((value - low + 1) * probabilityModel.getRange() - 1) / range;
+		Symbol const symbol = probabilityModel.getSymbol(scaled_value);
+		ProbabilityRange const p = probabilityModel.getSubrange(symbol);
 
 		// Update low and high according to the symbol's subrange within the
 		//   probability model
@@ -109,4 +109,9 @@ public:
 
 		return symbol;
 	}
+
+	/*
+	** Virtual destructor.
+	*/
+	virtual ~ArithmeticDecoder() = default;
 };

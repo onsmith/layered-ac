@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{DB0AF23E-72EB-4296-A9C6-BB5E88386233}</ProjectGuid>
-    <RootNamespace>RateEncoder</RootNamespace>
+    <ProjectGuid>{C24829AD-36C6-473B-A84E-46E725B2BA0C}</ProjectGuid>
+    <RootNamespace>SortedDecoder</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -112,11 +112,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\base\ArithmeticEncoder.h" />
-    <ClInclude Include="..\base\RateDropArithmeticEncoder.h" />
-    <ClInclude Include="..\model\ByteModel.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\io\BitReader.cpp" />
     <ClCompile Include="..\io\BitWriter.cpp" />
     <ClCompile Include="..\model\BinaryModel.cpp" />
@@ -124,6 +119,11 @@
     <ClCompile Include="..\model\ProbabilityRange.cpp" />
     <ClCompile Include="..\rc\TargetRateController.cpp" />
     <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\base\ArithmeticDecoder.h" />
+    <ClInclude Include="..\base\RateDropArithmeticDecoder.h" />
+    <ClInclude Include="SortedDecoder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

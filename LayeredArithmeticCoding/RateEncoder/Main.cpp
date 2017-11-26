@@ -16,10 +16,8 @@ using std::ios;
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
 #include "model/ByteModel.h"
-#include "model/BinaryModel.h"
 #include "rc/TargetRateController.h"
-
-#include "RateDropArithmeticEncoder.h"
+#include "base/RateDropArithmeticEncoder.h"
 
 
 /*
@@ -75,7 +73,7 @@ int main(int argc, char *argv[]) {
 	// Prepare arithmetic encoder
 	BitWriter writer(output_file);
 	ByteModel model;
-	TargetRateController rateController(4, 100*8); // target bits per symbol, initial bit surplus
+	TargetRateController rateController(8, 100*8); // target bits per symbol, initial bit surplus
 	RateDropArithmeticEncoder<unsigned char> encoder(writer, model, rateController);
 
 	// Run arithmetic encoder
@@ -93,6 +91,7 @@ int main(int argc, char *argv[]) {
 		if (encoder.canEncodeNextSymbol()) {
 			//cout << "Encoded " << symbol << ", spending " << actual_cost << " bits." << endl;
 			encoder.encode(symbol);
+			encoder.model().update(symbol);
 			spent += actual_cost;
 			encoded++;
 		} else {

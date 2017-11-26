@@ -25,7 +25,7 @@ public:
 
 protected:
 	/*
-	** Encapsulates a BitWriter for writing bits to an istream.
+	** Encapsulates a BitWriter for writing bits to an ostream.
 	*/
 	BitWriter &writer;
 
