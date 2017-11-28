@@ -24,6 +24,14 @@ using std::vector;
 
 
 /*
+** Encoding parameters.
+*/
+#define BITS_PER_SYMBOL 1.5
+#define INITIAL_SURPLUS_BITS 800
+typedef unsigned char Symbol;
+
+
+/*
 ** Prints the program usage to the given output stream.
 */
 void print_usage(ostream& stream, char* program_filename) {
@@ -80,22 +88,28 @@ int main(int argc, char *argv[]) {
 	ByteModel model;
 	vector<BitWriter*> bit_writers;
 	vector<TargetRateController*> rate_controllers;
-	vector<RateDropArithmeticEncoder<unsigned char>> layers;
+	vector<RateDropArithmeticEncoder<Symbol>> layers;
 	for (int i = 0; i < output_files.size(); i++) {
 		bit_writers.push_back(new BitWriter(output_files[i]));
-		rate_controllers.push_back(new TargetRateController(4.0, 100*8));
+		rate_controllers.push_back(new TargetRateController(BITS_PER_SYMBOL, INITIAL_SURPLUS_BITS));
 		layers.emplace_back(*bit_writers[i], model, *rate_controllers[i]);
 	}
-	SortedEncoder<unsigned char> encoder(layers);
+	SortedEncoder<Symbol> encoder(layers);
 
 	// Run arithmetic encoder
 	while (true) {
-		unsigned char symbol;
+		Symbol symbol;
 		input_file.read(reinterpret_cast<char*>(&symbol), sizeof(symbol));
 		if (input_file.eof()) { break; }
 		encoder.encode(symbol);
 	}
 	encoder.finish();
+
+	// Close files
+	input_file.close();
+	for (int i = 0; i < output_files.size(); i++) {
+		output_files[i].close();
+	}
 
 	// Free memory
 	for (int i = 0; i < layers.size(); i++) {

@@ -7,7 +7,7 @@ using std::vector;
 
 
 template <typename Symbol>
-class SortedDecoder {
+class SortedDecoder : public Decoder<Symbol> {
 private:
 	/*
 	** Composition of multiple arithmetic decoders.
@@ -26,9 +26,21 @@ public:
 	}
 
 	/*
+	** Returns true iff the decoder has attempted to read past the end of the
+	**   source data stream.
+	*/
+	bool eof() const final {
+		bool eof = true;
+		for (int i = 0; i < decoders.size(); i++) {
+			eof = eof && decoders[i].eof();
+		}
+		return eof;
+	}
+
+	/*
 	** Decodes the next symbol.
 	*/
-	Symbol decode() {
+	Symbol decode() final {
 		Symbol symbol = 'X';
 		bool hasBeenDecoded = false;
 		for (int i = 0; i < decoders.size(); i++) {

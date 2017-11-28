@@ -4,10 +4,11 @@
 #include "rc/RateController.h"
 #include "model/ProbabilityModel.h"
 #include "base/ArithmeticDecoder.h"
+#include "base/Decoder.h"
 
 
 template <typename Symbol>
-class RateDropArithmeticDecoder {
+class RateDropArithmeticDecoder : public Decoder<Symbol> {
 private:
 	/*
 	** Composition of these three objects.
@@ -50,9 +51,17 @@ public:
 	}
 
 	/*
+	** Returns true iff the decoder has attempted to read past the end of the
+	**   source data stream.
+	*/
+	bool eof() const final {
+		return decoder.eof();
+	}
+
+	/*
 	** Decodes the next symbol.
 	*/
-	Symbol decode() {
+	Symbol decode() final {
 		Symbol symbol(decoder.decode());
 		rateController.spendBits(probabilityModel.getSubrange(symbol).bitcost());
 		//model.update(symbol);

@@ -2,10 +2,11 @@
 
 #include "model/ProbabilityModel.h"
 #include "io/BitWriter.h"
+#include "base/Encoder.h"
 
 
 template <typename Symbol>
-class ArithmeticEncoder {
+class ArithmeticEncoder : public Encoder<Symbol> {
 public:
 	/*
 	** Data types.
@@ -87,7 +88,7 @@ public:
 	/*
 	** Finishes encoding by flushing any pending bits.
 	*/
-	void finish() {
+	void finish() final {
 		addPendingBit();
 		if (low < ONE_FOURTH_RANGE) {
 			writeBit(0);
@@ -101,7 +102,7 @@ public:
 	/*
 	** Encodes a single symbol.
 	*/
-	void encode(Symbol symbol) {
+	void encode(Symbol symbol) final {
 		// Get the ProbabilityRange corresponding to the symbol
 		ProbabilityRange p = model.getSubrange(symbol);
 
@@ -133,9 +134,4 @@ public:
 			low  &= WHOLE_RANGE;
 		}
 	}
-
-	/*
-	** Virtual destructor.
-	*/
-	virtual ~ArithmeticEncoder() = default;
 };

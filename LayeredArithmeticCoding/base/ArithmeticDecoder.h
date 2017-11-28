@@ -2,10 +2,11 @@
 
 #include "model/ProbabilityModel.h"
 #include "io/BitReader.h"
+#include "base/Decoder.h"
 
 
 template <typename Symbol>
-class ArithmeticDecoder {
+class ArithmeticDecoder : public Decoder<Symbol> {
 public:
 	/*
 	** Data types.
@@ -71,10 +72,18 @@ public:
 	}
 
 	/*
+	** Returns true iff the decoder has attempted to read past the end of the
+	**   source data stream.
+	*/
+	bool eof() const final {
+		return reader.eof();
+	}
+
+	/*
 	** Decodes a single symbol, returning the probability range of the symbol
 	**   observed.
 	*/
-	Symbol decode() {
+	Symbol decode() final {
 		// Get the Symbol and ProbabilityRange corresponding to the current Code
 		Code const range = high - low + 1;
 		Code const scaled_value = ((value - low + 1) * probabilityModel.getRange() - 1) / range;
@@ -109,9 +118,4 @@ public:
 
 		return symbol;
 	}
-
-	/*
-	** Virtual destructor.
-	*/
-	virtual ~ArithmeticDecoder() = default;
 };

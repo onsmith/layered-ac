@@ -4,10 +4,11 @@
 #include "rc/RateController.h"
 #include "model/ProbabilityModel.h"
 #include "base/ArithmeticEncoder.h"
+#include "base/Encoder.h"
 
 
 template <typename Symbol>
-class RateDropArithmeticEncoder {
+class RateDropArithmeticEncoder : public Encoder<Symbol> {
 private:
 	/*
 	** Composition of these three objects.
@@ -52,7 +53,7 @@ public:
 	/*
 	** Encodes the specified symbol.
 	*/
-	void encode(Symbol symbol) {
+	void encode(Symbol symbol) final {
 		encoder.encode(symbol);
 		rateController.spendBits(probabilityModel.getSubrange(symbol).bitcost());
 		//model.update(symbol);
@@ -61,7 +62,7 @@ public:
 	/*
 	** Finishes encoding by flushing any pending bits.
 	*/
-	void finish() {
+	void finish() final {
 		encoder.finish();
 	}
 

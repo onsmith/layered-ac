@@ -47,5 +47,8 @@
     <ClInclude Include="SortedDecoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\base\Decoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

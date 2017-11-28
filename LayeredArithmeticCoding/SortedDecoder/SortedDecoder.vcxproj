@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\base\ArithmeticDecoder.h" />
+    <ClInclude Include="..\base\Decoder.h" />
     <ClInclude Include="..\base\RateDropArithmeticDecoder.h" />
     <ClInclude Include="SortedDecoder.h" />
   </ItemGroup>

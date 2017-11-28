@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\base\ArithmeticEncoder.h" />
+    <ClInclude Include="..\base\Encoder.h" />
     <ClInclude Include="..\base\RateDropArithmeticEncoder.h" />
     <ClInclude Include="SortedEncoder.h" />
   </ItemGroup>

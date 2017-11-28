@@ -21,6 +21,14 @@ using std::ios;
 
 
 /*
+** Decoding parameters.
+*/
+#define BITS_PER_SYMBOL 1.5
+#define INITIAL_SURPLUS_BITS 800
+typedef unsigned char Symbol;
+
+
+/*
 ** Prints the program usage to the given output stream.
 */
 void print_usage(ostream& stream, char* program_filename) {
@@ -73,22 +81,35 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	// Prepare arithmetic encoder
+	// Prepare arithmetic decoder
 	ByteModel model;
 	vector<BitReader*> bit_readers;
 	vector<TargetRateController*> rate_controllers;
-	vector<RateDropArithmeticDecoder<unsigned char>> layers;
+	vector<RateDropArithmeticDecoder<Symbol>> layers;
 	for (int i = 0; i < input_files.size(); i++) {
 		bit_readers.push_back(new BitReader(input_files[i]));
-		rate_controllers.push_back(new TargetRateController(4.0, 100*8));
+		rate_controllers.push_back(new TargetRateController(BITS_PER_SYMBOL, INITIAL_SURPLUS_BITS));
 		layers.emplace_back(*bit_readers[i], model, *rate_controllers[i]);
 	}
-	SortedDecoder<unsigned char> decoder(layers);
+	SortedDecoder<Symbol> decoder(layers);
 
 	// Run arithmetic decoder
-	while (!input_files[0].eof()) {
-		auto symbol(decoder.decode());
+	while (true) {
+		Symbol symbol(decoder.decode());
+		if (decoder.eof()) { break; }
 		output_file.write(reinterpret_cast<char*>(&symbol), sizeof(symbol));
+	}
+
+	// Close files
+	output_file.close();
+	for (int i = 0; i < input_files.size(); i++) {
+		input_files[i].close();
+	}
+
+	// Free memory
+	for (int i = 0; i < layers.size(); i++) {
+		delete bit_readers[i];
+		delete rate_controllers[i];
 	}
 
 	// All done
