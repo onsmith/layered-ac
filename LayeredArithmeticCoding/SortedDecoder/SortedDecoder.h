@@ -44,7 +44,7 @@ public:
 		Symbol symbol = 'X';
 		bool hasBeenDecoded = false;
 		for (int i = 0; i < decoders.size(); i++) {
-			if (!hasBeenDecoded && decoders[i].canDecodeNextSymbol()) {
+			if (!hasBeenDecoded && !decoders[i].eof() && decoders[i].canDecodeNextSymbol()) {
 				symbol = decoders[i].decode();
 				hasBeenDecoded = true;
 				if (i == 0) {

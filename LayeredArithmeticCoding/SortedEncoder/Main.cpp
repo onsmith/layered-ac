@@ -27,7 +27,7 @@ using std::vector;
 ** Encoding parameters.
 */
 #define BITS_PER_SYMBOL 1.5
-#define INITIAL_SURPLUS_BITS 800
+#define INITIAL_BIT_SURPLUS 800
 typedef unsigned char Symbol;
 
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
 	vector<RateDropArithmeticEncoder<Symbol>> layers;
 	for (int i = 0; i < output_files.size(); i++) {
 		bit_writers.push_back(new BitWriter(output_files[i]));
-		rate_controllers.push_back(new TargetRateController(BITS_PER_SYMBOL, INITIAL_SURPLUS_BITS));
+		rate_controllers.push_back(new TargetRateController(BITS_PER_SYMBOL, INITIAL_BIT_SURPLUS));
 		layers.emplace_back(*bit_writers[i], model, *rate_controllers[i]);
 	}
 	SortedEncoder<Symbol> encoder(layers);

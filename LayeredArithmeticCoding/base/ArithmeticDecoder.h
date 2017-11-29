@@ -45,6 +45,11 @@ protected:
 	*/
 	Code value;
 
+	/*
+	** Tracks remaining bits once the end of the input stream is reached.
+	*/
+	int bitsLeft = CODE_BIT_LENGTH;
+
 
 private:
 	/*
@@ -76,7 +81,8 @@ public:
 	**   source data stream.
 	*/
 	bool eof() const final {
-		return reader.eof();
+		return (bitsLeft <= 0);
+		//return reader.eof();
 	}
 
 	/*
@@ -114,6 +120,9 @@ public:
 			value <<= 1;
 			high++;
 			value += (reader.readBit() ? 1 : 0);
+			if (reader.eof()) {
+				bitsLeft--;
+			}
 		}
 
 		return symbol;

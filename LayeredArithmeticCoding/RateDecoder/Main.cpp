@@ -20,6 +20,14 @@ using std::ios;
 
 
 /*
+** Decoding parameters.
+*/
+#define BITS_PER_SYMBOL 8
+#define INITIAL_BIT_SURPLUS 800
+typedef unsigned char Symbol;
+
+
+/*
 ** Prints the program usage to the given output stream.
 */
 void print_usage(ostream& stream, char* program_filename) {
@@ -72,8 +80,8 @@ int main(int argc, char *argv[]) {
 	// Prepare arithmetic encoder
 	BitReader reader(input_file);
 	ByteModel model;
-	TargetRateController rateController(8, 100*8); // target bits per symbol, initial bit surplus
-	RateDropArithmeticDecoder<unsigned char> decoder(reader, model, rateController);
+	TargetRateController rateController(BITS_PER_SYMBOL, INITIAL_BIT_SURPLUS);
+	RateDropArithmeticDecoder<Symbol> decoder(reader, model, rateController);
 
 	// Run arithmetic decoder
 	double decoded = 0.0;
@@ -83,14 +91,14 @@ int main(int argc, char *argv[]) {
 		double budget = rateController.symbolBudget();
 		//cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
 		if (decoder.canDecodeNextSymbol()) {
-			auto symbol = decoder.decode();
-			decoder.model().update(symbol);
+			Symbol symbol = decoder.decode();
+			model.update(symbol);
 			output_file.write(reinterpret_cast<char*>(&symbol), sizeof(symbol));
 			//cout << "Decoded " << symbol << " (" << static_cast<int>(symbol) << ")." << endl;
 			decoded++;
 		} else {
 			decoder.skipSymbol();
-			auto symbol = 'X'; //model.getCheapestSymbol();
+			Symbol symbol = 'X'; //model.getCheapestSymbol();
 			output_file.write(reinterpret_cast<char*>(&symbol), sizeof(symbol));
 			//cout << "Couldn't decode next symbol. Chose " << symbol << " instead." << endl;
 			dropped++;

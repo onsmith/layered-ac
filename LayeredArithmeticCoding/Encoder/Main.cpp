@@ -1,4 +1,4 @@
-#include <cstdint>
+ #include <cstdint>
 
 #include <iostream>
 using std::cout;
@@ -11,13 +11,17 @@ using std::ifstream;
 using std::ofstream;
 using std::ios;
 
-#include <cmath>
-
 #include "model/BinaryModel.h"
 #include "base/ArithmeticEncoder.h"
 
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
+
+
+/*
+** Encoding parameters.
+*/
+typedef bool Symbol;
 
 
 /*
@@ -74,21 +78,20 @@ int main(int argc, char *argv[]) {
 	BitReader reader(input_file);
 	BitWriter writer(output_file);
 	BinaryModel model;
-	ArithmeticEncoder<bool> encoder(writer, model);
+	ArithmeticEncoder<Symbol> encoder(writer, model);
 
 	// Run arithmetic encoder
 	double symbols_encoded = 0;
 	double bits_outputted = 0;
 	while (true) {
-		auto symbol = reader.readBit();
+		Symbol symbol = reader.readBit();
 		if (reader.eof()) { break; }
 		symbols_encoded++;
-		auto range = model.getSubrange(symbol);
-		auto cost = log2(static_cast<double>(range.range) / (range.high - range.low));
+		double cost = model.getSubrange(symbol).bitcost();
 		encoder.encode(symbol);
-		model.observe(symbol);
+		model.update(symbol);
 		bits_outputted += cost;
-		cout << "Encoded " << (symbol ? '1' : '0') << ", spending " << cost << " bits." << endl;
+		cout << "Encoded " << (symbol ? '1' : '0') << " spending " << cost << " bits." << endl;
 	}
 	encoder.finish();
 

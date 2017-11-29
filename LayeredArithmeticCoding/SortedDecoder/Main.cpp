@@ -24,7 +24,7 @@ using std::ios;
 ** Decoding parameters.
 */
 #define BITS_PER_SYMBOL 1.5
-#define INITIAL_SURPLUS_BITS 800
+#define INITIAL_BIT_SURPLUS 800
 typedef unsigned char Symbol;
 
 
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 	vector<RateDropArithmeticDecoder<Symbol>> layers;
 	for (int i = 0; i < input_files.size(); i++) {
 		bit_readers.push_back(new BitReader(input_files[i]));
-		rate_controllers.push_back(new TargetRateController(BITS_PER_SYMBOL, INITIAL_SURPLUS_BITS));
+		rate_controllers.push_back(new TargetRateController(BITS_PER_SYMBOL, INITIAL_BIT_SURPLUS));
 		layers.emplace_back(*bit_readers[i], model, *rate_controllers[i]);
 	}
 	SortedDecoder<Symbol> decoder(layers);

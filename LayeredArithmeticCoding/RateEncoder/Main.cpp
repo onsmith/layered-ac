@@ -21,6 +21,14 @@ using std::ios;
 
 
 /*
+** Encoding parameters.
+*/
+#define BITS_PER_SYMBOL 8
+#define INITIAL_BIT_SURPLUS 800
+typedef unsigned char Symbol;
+
+
+/*
 ** Prints the program usage to the given output stream.
 */
 void print_usage(ostream& stream, char* program_filename) {
@@ -73,15 +81,15 @@ int main(int argc, char *argv[]) {
 	// Prepare arithmetic encoder
 	BitWriter writer(output_file);
 	ByteModel model;
-	TargetRateController rateController(8, 100*8); // target bits per symbol, initial bit surplus
-	RateDropArithmeticEncoder<unsigned char> encoder(writer, model, rateController);
+	TargetRateController rateController(BITS_PER_SYMBOL, INITIAL_BIT_SURPLUS);
+	RateDropArithmeticEncoder<Symbol> encoder(writer, model, rateController);
 
 	// Run arithmetic encoder
 	double encoded = 0.0;
 	double dropped = 0.0;
 	double spent   = 0.0;
 	while (true) {
-		unsigned char symbol;
+		Symbol symbol;
 		input_file.read(reinterpret_cast<char*>(&symbol), sizeof(symbol));
 		if (input_file.eof()) { break; }
 		double actual_cost = model.getSubrange(symbol).bitcost();
@@ -91,7 +99,7 @@ int main(int argc, char *argv[]) {
 		if (encoder.canEncodeNextSymbol()) {
 			//cout << "Encoded " << symbol << ", spending " << actual_cost << " bits." << endl;
 			encoder.encode(symbol);
-			encoder.model().update(symbol);
+			model.update(symbol);
 			spent += actual_cost;
 			encoded++;
 		} else {

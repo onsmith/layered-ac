@@ -19,6 +19,12 @@ using std::ios;
 
 
 /*
+** Decoding parameters.
+*/
+typedef bool Symbol;
+
+
+/*
 ** Prints the program usage to the given output stream.
 */
 void print_usage(ostream& stream, char* program_filename) {
@@ -72,19 +78,18 @@ int main(int argc, char *argv[]) {
 	BitReader reader(input_file);
 	BitWriter writer(output_file);
 	BinaryModel model;
-	ArithmeticDecoder<bool> decoder(reader, model);
+	ArithmeticDecoder<Symbol> decoder(reader, model);
 
 	// Run arithmetic decoder
 	double bits_consumed = 0;
 	double symbols_outputted = 0;
 	while (true) {
-		auto symbol = decoder.decode();
-		if (reader.eof()) { break; }
+		Symbol symbol = decoder.decode();
+		if (decoder.eof()) { break; }
 		symbols_outputted++;
-		auto range = model.getSubrange(symbol);
-		auto cost = log2(static_cast<double>(range.range) / (range.high - range.low));
+		double cost = model.getSubrange(symbol).bitcost();
 		bits_consumed += cost;
-		model.observe(symbol);
+		model.update(symbol);
 		writer.writeBit(symbol);
 		cout << "Decoded " << (symbol ? '1' : '0') << ", consuming " << cost << " bits." << endl;
 	}
