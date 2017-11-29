@@ -27,7 +27,7 @@ using std::vector;
 ** Encoding parameters.
 */
 #define BITS_PER_SYMBOL 1.5
-#define INITIAL_BIT_SURPLUS 800
+#define INITIAL_BIT_SURPLUS 0
 typedef unsigned char Symbol;
 
 
