@@ -86,12 +86,13 @@ int main(int argc, char *argv[]) {
 	// Run arithmetic decoder
 	double decoded = 0.0;
 	double dropped = 0.0;
-	while (!reader.eof()) {
+	while (true) {
 		double max_cost = model.getSubrange(model.getCostliestSymbol()).bitcost();
 		double budget = rateController.symbolBudget();
 		//cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
 		if (decoder.canDecodeNextSymbol()) {
 			Symbol symbol = decoder.decode();
+			if (decoder.eof()) { break; }
 			model.update(symbol);
 			output_file.write(reinterpret_cast<char*>(&symbol), sizeof(symbol));
 			//cout << "Decoded " << symbol << " (" << static_cast<int>(symbol) << ")." << endl;
