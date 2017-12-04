@@ -24,6 +24,9 @@
     <ClInclude Include="..\base\RateDropArithmeticEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\base\Fixed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\io\BitReader.cpp">

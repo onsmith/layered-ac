@@ -1,16 +1,16 @@
 #include "TargetRateController.h"
 
 
-TargetRateController::TargetRateController(double target, double budget) :
+TargetRateController::TargetRateController(fixed target, fixed surplus) :
 	target(target),
-	budget(budget) {
+	budget(surplus) {
 	spendBits();
 }
 
-double TargetRateController::symbolBudget() const {
+TargetRateController::fixed TargetRateController::symbolBudget() const {
 	return budget;
 }
 
-void TargetRateController::spendBits(double cost) {
+void TargetRateController::spendBits(fixed cost) {
 	budget += target - cost;
 }

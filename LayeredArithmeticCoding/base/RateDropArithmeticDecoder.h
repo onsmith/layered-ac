@@ -37,8 +37,8 @@ public:
 	**   symbol.
 	*/
 	bool canDecodeNextSymbol() const {
-		double max_cost = probabilityModel.getSubrange(probabilityModel.getCostliestSymbol()).bitcost();
-		double budgeted_cost = rateController.symbolBudget();
+		fixed max_cost = probabilityModel.getSubrange(probabilityModel.getCostliestSymbol()).bitcost();
+		fixed budgeted_cost = rateController.symbolBudget();
 		return (max_cost <= budgeted_cost);
 	}
 

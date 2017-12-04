@@ -12,6 +12,7 @@ using std::ofstream;
 using std::ios;
 
 
+#include "base/Fixed.h"
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
 #include "model/ByteModel.h"
@@ -22,9 +23,10 @@ using std::ios;
 /*
 ** Decoding parameters.
 */
-#define BITS_PER_SYMBOL 8
-#define INITIAL_BIT_SURPLUS 800
 typedef unsigned char Symbol;
+typedef Fixed<false, 20> fixed;
+static const fixed BITS_PER_SYMBOL(4);
+static const fixed INITIAL_BIT_SURPLUS(0);
 
 
 /*
@@ -84,11 +86,11 @@ int main(int argc, char *argv[]) {
 	RateDropArithmeticDecoder<Symbol> decoder(reader, model, rateController);
 
 	// Run arithmetic decoder
-	double decoded = 0.0;
-	double dropped = 0.0;
+	int decoded = 0;
+	int dropped = 0;
 	while (true) {
-		double max_cost = model.getSubrange(model.getCostliestSymbol()).bitcost();
-		double budget = rateController.symbolBudget();
+		fixed max_cost = model.getSubrange(model.getCostliestSymbol()).bitcost();
+		fixed budget = rateController.symbolBudget();
 		//cout << "Need at most " << max_cost << " bits; have " << budget << " bits." << endl;
 		if (decoder.canDecodeNextSymbol()) {
 			Symbol symbol = decoder.decode();

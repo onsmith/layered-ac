@@ -6,9 +6,18 @@
 #include "base/ArithmeticEncoder.h"
 #include "base/Encoder.h"
 
+#include <cstdint>
+
 
 template <typename Symbol>
 class RateDropArithmeticEncoder : public Encoder<Symbol> {
+public:
+	/*
+	** Data types.
+	*/
+	typedef Fixed<false, 20> fixed;
+
+
 private:
 	/*
 	** Composition of these three objects.
@@ -37,8 +46,8 @@ public:
 	**   symbol.
 	*/
 	bool canEncodeNextSymbol() const {
-		double max_cost = probabilityModel.getSubrange(probabilityModel.getCostliestSymbol()).bitcost();
-		double budgeted_cost = rateController.symbolBudget();
+		fixed max_cost = probabilityModel.getSubrange(probabilityModel.getCostliestSymbol()).bitcost();
+		fixed budgeted_cost = rateController.symbolBudget();
 		return (max_cost <= budgeted_cost);
 	}
 

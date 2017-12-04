@@ -16,6 +16,7 @@ using std::vector;
 
 #include "SortedEncoder.h"
 
+#include "base/Fixed.h"
 #include "io/BitReader.h"
 #include "io/BitWriter.h"
 #include "model/ByteModel.h"
@@ -26,9 +27,10 @@ using std::vector;
 /*
 ** Encoding parameters.
 */
-#define BITS_PER_SYMBOL 1.5
-#define INITIAL_BIT_SURPLUS 0
 typedef unsigned char Symbol;
+typedef Fixed<false, 20> fixed;
+static const fixed BITS_PER_SYMBOL(1.5);
+static const fixed INITIAL_BIT_SURPLUS(0);
 
 
 /*

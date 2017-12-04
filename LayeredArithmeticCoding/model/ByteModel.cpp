@@ -6,18 +6,18 @@ ByteModel::ByteModel() :
 	cheapest(0x0),
 	counts(0x100) {
 	counts[0] = 1;
-	for (int i = 1; i < counts.size(); i++) {
+	for (size_t i = 1; i < counts.size(); i++) {
 		counts[i] = counts[i-1] + 1;
 	}
 }
 
 void ByteModel::update(Symbol symbol) {
 	if (counts.back() < 0x1000) {
-		for (int i = symbol; i < counts.size(); i++) {
+		for (size_t i = symbol; i < counts.size(); i++) {
 			counts[i]++;
 		}
 		if (symbol == costliest) {
-			for (int i = 0; i < counts.size(); i++) {
+			for (Symbol i = 0; i < counts.size(); i++) {
 				if (getCount(i) < getCount(costliest)) {
 					costliest = i;
 				}

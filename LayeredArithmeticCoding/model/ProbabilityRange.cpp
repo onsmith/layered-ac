@@ -1,14 +1,13 @@
 #include "ProbabilityRange.h"
 
-#include <cmath>
 
-
-ProbabilityRange::ProbabilityRange(uint32_t low, uint32_t high, uint32_t range) :
+ProbabilityRange::ProbabilityRange(Probability low, Probability high, Probability range) :
 	low(low),
 	high(high),
 	range(range) {
 }
 
-double ProbabilityRange::bitcost() const {
-	return log2(static_cast<double>(range) / (high - low));
+ProbabilityRange::fixed ProbabilityRange::bitcost() const {
+	fixed tmp(range);
+	return fixed::log2(tmp / (high - low));
 }
