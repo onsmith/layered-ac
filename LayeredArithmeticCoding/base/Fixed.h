@@ -12,30 +12,28 @@ public:
 	/*
 	** Underlying data type.
 	*/
-	typedef int64_t fixed_t;
+	typedef int64_t value_t;
 
-	/*
-	** Fractional mask.
-	*/
-	const static fixed_t PRECISION_MASK = (0x1 << PRECISION) - 1;
 
 	/*
 	** Define unity.
 	*/
-	const static fixed_t ONE = (0x1 << PRECISION);
+	const static value_t ONE      = (0x1 << PRECISION);
+	const static int64_t TWO      = ONE * 2;
+	const static int64_t ONE_HALF = ONE / 2;
 
 
 private:
 	/*
 	** Underlying value.
 	*/
-	fixed_t value;
+	value_t value;
 
 
 	/*
 	** Internal factory method.
 	*/
-	static inline Fixed create(fixed_t value) {
+	static inline Fixed create(value_t value) {
 		Fixed result(0);
 		result.value = value;
 		return result;
@@ -46,18 +44,21 @@ public:
 	/*
 	** Constructors.
 	*/
-	Fixed(int64_t  integer)  : value(fixed_t(integer) << PRECISION    ) {}
-	Fixed(uint64_t integer)  : value(fixed_t(integer) << PRECISION    ) {}
-	Fixed(int      integer)  : value(fixed_t(integer) << PRECISION    ) {}
-	Fixed(float    value  )  : value(static_cast<fixed_t>(value * ONE)) {}
-	Fixed(double   value  )  : value(static_cast<fixed_t>(value * ONE)) {}
+	Fixed(signed char        integer) : value(static_cast<value_t>(integer) << PRECISION) {}
+	Fixed(signed short       integer) : value(static_cast<value_t>(integer) << PRECISION) {}
+	Fixed(signed int         integer) : value(static_cast<value_t>(integer) << PRECISION) {}
+	Fixed(signed long        integer) : value(static_cast<value_t>(integer) << PRECISION) {}
+	Fixed(signed long long   integer) : value(static_cast<value_t>(integer) << PRECISION) {}
 
+	Fixed(unsigned char      integer) : value(static_cast<value_t>(integer) << PRECISION) {}
+	Fixed(unsigned short     integer) : value(static_cast<value_t>(integer) << PRECISION) {}
+	Fixed(unsigned int       integer) : value(static_cast<value_t>(integer) << PRECISION) {}
+	Fixed(unsigned long      integer) : value(static_cast<value_t>(integer) << PRECISION) {}
+	Fixed(unsigned long long integer) : value(static_cast<value_t>(integer) << PRECISION) {}
 
-	/*
-	** Access integer or fractional portion of value.
-	*/
-	fixed_t integer()  const { return (value >> PRECISION     ); }
-	fixed_t fraction() const { return (value  & PRECISION_MASK); }
+	Fixed(float              value  ) : value(static_cast<value_t>(value * ONE)         ) {}
+	Fixed(double             value  ) : value(static_cast<value_t>(value * ONE)         ) {}
+	Fixed(long double        value  ) : value(static_cast<value_t>(value * ONE)         ) {}
 
 
 	/*
@@ -74,66 +75,55 @@ public:
 	/*
 	** Unary operators.
 	*/
-	inline bool   operator! () const { return !value;              }
-	inline Fixed  operator~ () const { return Fixed(~value);       }
-	inline Fixed& operator++()       { value += ONE; return *this; }
-	inline Fixed& operator--()       { value += ONE; return *this; }
+	inline bool  operator!() const { return !value;         }
+	inline Fixed operator~() const { return create(~value); }
 
 
 	/*
-	** Multiplication.
+	** Unary modifier operators.
 	*/
-	inline Fixed& operator*=(const Fixed &rhs) {
-		value *= rhs.value;
-		value >>= PRECISION;
-		return *this;
-	}
+	inline Fixed& operator++() { value += ONE; return *this; }
+	inline Fixed& operator--() { value -= ONE; return *this; }
 
 
 	/*
-	** Division.
+	** Binary operators.
 	*/
-	inline Fixed &operator/=(const Fixed &rhs) {
-		value <<= PRECISION;
-		value /= rhs.value;
-		return *this;
-	}
+	inline Fixed& operator+=(const Fixed &rhs) { value += rhs.value;                       return *this; }
+	inline Fixed& operator-=(const Fixed &rhs) { value -= rhs.value;                       return *this; }
+	inline Fixed& operator*=(const Fixed &rhs) { value *= rhs.value;  value >>= PRECISION; return *this; }
+	inline Fixed& operator/=(const Fixed &rhs) { value <<= PRECISION; value /= rhs.value;  return *this; }
+
+	inline Fixed& operator&=(const Fixed &rhs) { value &= rhs.value;                       return *this; }
+	inline Fixed& operator|=(const Fixed &rhs) { value |= rhs.value;                       return *this; }
+	inline Fixed& operator^=(const Fixed &rhs) { value ^= rhs.value;                       return *this; }
 
 
 	/*
 	** Binary modifier operators.
 	*/
-	inline Fixed& operator+=(const Fixed &rhs) { value += rhs.value; return *this; }
-	inline Fixed& operator-=(const Fixed &rhs) { value -= rhs.value; return *this; }
-	inline Fixed& operator&=(const Fixed &rhs) { value &= rhs.value; return *this; }
-	inline Fixed& operator|=(const Fixed &rhs) { value |= rhs.value; return *this; }
-	inline Fixed& operator^=(const Fixed &rhs) { value ^= rhs.value; return *this; }
-
-
-	/*
-	** Binary arithmetic operators.
-	*/
 	inline Fixed operator+(const Fixed &rhs) const { Fixed x(*this); x *= rhs; return x; }
 	inline Fixed operator-(const Fixed &rhs) const { Fixed x(*this); x -= rhs; return x; }
+	inline Fixed operator*(const Fixed &rhs) const { Fixed x(*this); x *= rhs; return x; }
+	inline Fixed operator/(const Fixed &rhs) const { Fixed x(*this); x /= rhs; return x; }
+
 	inline Fixed operator&(const Fixed &rhs) const { Fixed x(*this); x &= rhs; return x; }
 	inline Fixed operator|(const Fixed &rhs) const { Fixed x(*this); x |= rhs; return x; }
 	inline Fixed operator^(const Fixed &rhs) const { Fixed x(*this); x ^= rhs; return x; }
-	inline Fixed operator*(const Fixed &rhs) const { Fixed x(*this); x *= rhs; return x; }
-	inline Fixed operator/(const Fixed &rhs) const { Fixed x(*this); x /= rhs; return x; }
 
 
 	/*
 	** Conversion methods.
 	*/
-	int    toInt()    const { return integer();                        }
-	float  toFloat()  const { return static_cast<float >(value) / ONE; }
-	double toDouble() const { return static_cast<double>(value) / ONE; }
+	inline int    toInt()    const { return static_cast<int   >(value >> PRECISION); }
+	inline float  toFloat()  const { return static_cast<float >(value) / ONE;        }
+	inline double toDouble() const { return static_cast<double>(value) / ONE;        }
 
 
 	/*
 	** Output stream operator.
 	*/
-	friend ostream& operator<<(ostream& stream, Fixed &rhs) {
+	friend ostream& operator<<(ostream& stream, const Fixed &rhs) {
 		return stream << rhs.toDouble();
 	}
 
@@ -141,41 +131,22 @@ public:
 	/*
 	** Base 2 logarithm.
 	*/
-	static Fixed log2(const Fixed fp) {
-		int64_t b  = 0x1 << (PRECISION - 1);
-		int64_t y  = 0;
-		int64_t x = fp.value;
+	static Fixed log2(Fixed x) {
+		Fixed result(0);
 
-		//if (precision < 1 || precision > 31) {
-		//	errno = EINVAL;
-		//	return INT32_MAX; // indicates an error
-		//}
+		// Calculate integer portion of logarithm
+		while (x.value <  ONE) { x.value <<= 1; --result; }
+		while (x.value >= TWO) { x.value >>= 1; ++result; }
 
-		//if (x == 0) {
-		//		return INT32_MIN; // represents negative infinity
-		//}
-
-		while (x < 0x1 << PRECISION) {
-			x <<= 1;
-			y -= 0x1 << PRECISION;
-		}
-
-		while (x >= 0x2 << PRECISION) {
-			x >>= 1;
-			y += 0x1 << PRECISION;
-		}
-
-		int64_t z = x;
-
+		// Calculate fractional portion of logarithm
 		for (size_t i = 0; i < PRECISION; i++) {
-			z = z * z >> PRECISION;
-			if (z >= 0x2 << PRECISION) {
-				z >>= 1;
-				y += b;
+			x *= x;
+			if (x.value >= TWO) {
+				x.value >>= 1;
+				result.value += (ONE_HALF >> i);
 			}
-			b >>= 1;
 		}
 
-		return create(y);
+		return result;
 	}
 };

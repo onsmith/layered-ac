@@ -115,10 +115,8 @@ int main(int argc, char *argv[]) {
 	// All done
 	cout << endl << "Finished." << endl;
 	cout << "Processed " << (encoded + dropped) << " symbols in total." << endl;
-	cout << "Encoded " << encoded << " symbols." << endl;
-	cout << "Dropped " << dropped << " symbols." << endl;
-	cout << "Encoded " << fixed(encoded) / (encoded + dropped) * 100 << "% of symbols." << endl;
-	cout << "Dropped " << fixed(dropped) / (encoded + dropped) * 100 << "% of symbols." << endl;
+	cout << "Encoded " << encoded << " symbols (" << fixed(encoded) / (encoded + dropped) * 100 << "%)." << endl;
+	cout << "Dropped " << dropped << " symbols (" << fixed(dropped) / (encoded + dropped) * 100 << "%)." << endl;
 	cout << "Processed " << (encoded + dropped) << " bytes." << endl;
 	cout << "Output " << spent / 8 << " bytes." << endl;
 	cout << "Output " << spent / (encoded + dropped) << " bits per symbol." << endl;
