@@ -13,11 +13,6 @@ public:
 	typedef Fixed<false, 20> fixed;
 	typedef uint64_t         Probability;
 
-	/*
-	** Define the precision used for fixed point values.
-	*/
-	static const int FIXED_POINT_PRECISION = 20;
-
 
 public:
 	/*

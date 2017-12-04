@@ -4,6 +4,7 @@
 using std::ostream;
 
 #include <cstdint>
+#include <math.h>
 
 
 template <bool SIGNED, size_t PRECISION>
@@ -148,5 +149,29 @@ public:
 		}
 
 		return result;
+	}
+
+
+	/*
+	** Generic logarithm.
+	*/
+	static Fixed log(const Fixed& x, const Fixed& b) {
+		return log2(x) / log2(b);
+	}
+
+
+	/*
+	** Base 10 logarithm.
+	*/
+	static Fixed log10(const Fixed& x) {
+		return log(x, 10);
+	}
+
+
+	/*
+	** Natural logarithm.
+	*/
+	static Fixed ln(const Fixed& x) {
+		return log(x, exp(1));
 	}
 };
