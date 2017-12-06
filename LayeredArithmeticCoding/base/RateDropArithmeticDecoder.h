@@ -9,6 +9,13 @@
 
 template <typename Symbol>
 class RateDropArithmeticDecoder : public Decoder<Symbol> {
+public:
+	/*
+	** Data types.
+	*/
+	typedef ProbabilityRange::fixed fixed;
+
+
 private:
 	/*
 	** Composition of these three objects.

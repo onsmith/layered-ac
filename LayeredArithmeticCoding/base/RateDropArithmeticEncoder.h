@@ -15,7 +15,7 @@ public:
 	/*
 	** Data types.
 	*/
-	typedef Fixed<false, 20> fixed;
+	typedef ProbabilityRange::fixed fixed;
 
 
 private:

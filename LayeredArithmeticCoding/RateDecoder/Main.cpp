@@ -24,7 +24,7 @@ using std::ios;
 ** Decoding parameters.
 */
 typedef unsigned char Symbol;
-typedef Fixed<false, 20> fixed;
+typedef Fixed<20> fixed;
 static const fixed BITS_PER_SYMBOL(4);
 static const fixed INITIAL_BIT_SURPLUS(0);
 

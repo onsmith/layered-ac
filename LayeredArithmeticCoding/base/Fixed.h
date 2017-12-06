@@ -7,7 +7,7 @@ using std::ostream;
 #include <math.h>
 
 
-template <bool SIGNED, size_t PRECISION>
+template <size_t PRECISION>
 class Fixed {
 public:
 	/*
@@ -103,7 +103,7 @@ public:
 	/*
 	** Binary modifier operators.
 	*/
-	inline Fixed operator+(const Fixed &rhs) const { Fixed x(*this); x *= rhs; return x; }
+	inline Fixed operator+(const Fixed &rhs) const { Fixed x(*this); x += rhs; return x; }
 	inline Fixed operator-(const Fixed &rhs) const { Fixed x(*this); x -= rhs; return x; }
 	inline Fixed operator*(const Fixed &rhs) const { Fixed x(*this); x *= rhs; return x; }
 	inline Fixed operator/(const Fixed &rhs) const { Fixed x(*this); x /= rhs; return x; }

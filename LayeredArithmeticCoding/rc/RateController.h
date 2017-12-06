@@ -7,7 +7,7 @@ public:
 	/*
 	** Data types.
 	*/
-	typedef Fixed<false, 20> fixed;
+	typedef Fixed<20> fixed;
 
 	/*
 	** Gets the number of bits alloted to the next symbol.

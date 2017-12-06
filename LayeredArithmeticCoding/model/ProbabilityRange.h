@@ -10,8 +10,8 @@ public:
 	/*
 	** Data types.
 	*/
-	typedef Fixed<false, 20> fixed;
-	typedef uint64_t         Probability;
+	typedef Fixed<20> fixed;
+	typedef uint64_t  Probability;
 
 
 public:
